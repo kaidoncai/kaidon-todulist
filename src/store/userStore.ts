@@ -12,7 +12,7 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       user: null,
-      setUser: (user) => set({ user }),
+      setUser: (user: User) => set({ user }),
       clearUser: () => set({ user: null }),
     }),
     {

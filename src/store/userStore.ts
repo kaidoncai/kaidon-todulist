@@ -1,23 +1,21 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { User } from '@/src/types/user';
+import { User, NewUser } from '../types/user';
 
 interface UserStore {
   user: User | null;
-  setUser: (user: User) => void;
+  setUser: (user: NewUser) => void;
   clearUser: () => void;
 }
 
-export const useUserStore = create<UserStore>()(
-  persist(
-    (set) => ({
-      user: null,
-      setUser: (user: User) => set({ user }),
-      clearUser: () => set({ user: null }),
-    }),
-    {
-      name: 'user-storage',
-    }
-  )
-); 
+export const useUserStore = create<UserStore>((set) => ({
+  user: null,
+  setUser: (newUser: NewUser) => {
+    const user: User = {
+      ...newUser,
+      id: crypto.randomUUID()
+    };
+    set({ user });
+  },
+  clearUser: () => set({ user: null })
+})); 
 
